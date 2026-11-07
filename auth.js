@@ -71,6 +71,33 @@
         if (!api.canRead()) return [];
         return FS.Fs.getDoc(FS.Fs.doc(FS.store, ROOT + '/meta', 'gate')).then(function (d) { return (d.exists() && d.data().keys) || []; });
       });
+    },
+
+    /* Control requests (plan P4): the hub only writes a request; the runner on the operator's Mac checks it again and
+     * carries it out. Admin accounts may ask; team accounts see the queue and the audit log (firestore.rules). */
+    canRequest: function () { return !!api.user && api.user.role === 'admin'; },
+    /* live list of a collection (requests or audit), newest first; fn(rows) on every change; returns a stop function */
+    watch: function (name, fn) {
+      var stop = null, stopped = false;
+      init().then(function () {
+        if (stopped || !api.canRead()) return;
+        var F = FS.Fs, q = F.query(F.collection(FS.store, ROOT + '/' + name), F.orderBy(name === 'audit' ? 'finishedAt' : 'createdAt', 'desc'), F.limit(200));
+        stop = F.onSnapshot(q, function (snap) { var rows = []; snap.forEach(function (d) { rows.push(Object.assign({ id: d.id }, d.data())); }); fn(rows); },
+          function (e) { console.error('[auth] ' + name, e); fn(null); });
+      }, function () { fn(null); });
+      return function () { stopped = true; if (stop) stop(); };
+    },
+    request: function (action, params) {
+      return init().then(function () {
+        if (!api.canRequest()) throw new Error('not admin');
+        var id = 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+        return FS.Fs.setDoc(FS.Fs.doc(FS.store, ROOT + '/requests', id), {
+          action: action, params: params || {}, status: 'queued', requestedBy: api.user.email, requestedByUid: api.user.uid, createdAt: Date.now()
+        }).then(function () { return id; });
+      });
+    },
+    cancel: function (id) {
+      return init().then(function () { return FS.Fs.updateDoc(FS.Fs.doc(FS.store, ROOT + '/requests', id), { status: 'cancelled' }); });
     }
   };
 })();
