@@ -17,3 +17,7 @@ form.grant input, form.grant select { padding: 6px 8px; border: 1px solid var(--
 .op-actions { display: flex; gap: 12px; align-items: center; margin-top: 4px; }
 .linkbtn.danger { color: #b42318; }
 .pre { white-space: pre-wrap; }
+/* the settlement form (ops.js): two small number fields side by side */
+.op-settle .op-row { align-items: flex-end; }
+.op-settle .op-field { flex: 1 1 220px; }
+.op-settle .op-field input { flex: none; padding: 6px 8px; border: 1px solid var(--hub-line); border-radius: 6px; background: var(--hub-bg); color: var(--hub-ink); font: inherit; }
