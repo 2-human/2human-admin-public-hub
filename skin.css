@@ -21,3 +21,4 @@ form.grant input, form.grant select { padding: 6px 8px; border: 1px solid var(--
 .op-settle .op-row { align-items: flex-end; }
 .op-settle .op-field { flex: 1 1 220px; }
 .op-settle .op-field input { flex: none; padding: 6px 8px; border: 1px solid var(--hub-line); border-radius: 6px; background: var(--hub-bg); color: var(--hub-ink); font: inherit; }
+.op-upload { cursor: pointer; display: inline-block; }

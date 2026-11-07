@@ -28,14 +28,19 @@
     var cfg = window.FIREBASE_CONFIG;
     if (!(cfg && cfg.apiKey)) return Promise.reject(new Error('no backend config'));
     if (INIT) return INIT;
-    var fb = Object.assign({}, cfg); delete fb.emulator;
+    var fb = Object.assign({}, cfg); delete fb.emulator; delete fb.appCheckSiteKey;
     INIT = Promise.all(['app', 'auth', 'firestore'].map(function (m) { return import(SDK + m + '.js'); })).then(function (M) {
       var A = M[0], Au = M[1], Fs = M[2];
       var app = A.getApps().length ? A.getApp() : A.initializeApp(fb), auth = Au.getAuth(app);   /* Auth before the database */
       var emu = cfg.emulator;
       if (emu) Au.connectAuthEmulator(auth, 'http://127.0.0.1:' + emu.auth, { disableWarnings: true });
-      AU = { Au: Au, auth: auth };
-      return Promise.resolve(finishLink(Au, auth)).then(function () {
+      AU = { Au: Au, auth: auth, app: app };
+      /* App Check (reCAPTCHA Enterprise): every Firestore and Storage request carries a token, so enforcing App Check for
+       * the public contact form's sake keeps the hub working. Not on the emulators. */
+      var appCheck = !emu && cfg.appCheckSiteKey ? import(SDK + 'app-check.js').then(function (AC) {
+        AC.initializeAppCheck(app, { provider: new AC.ReCaptchaEnterpriseProvider(cfg.appCheckSiteKey), isTokenAutoRefreshEnabled: true });
+      }).catch(function (e) { console.warn('[auth] app check', e); }) : null;
+      return Promise.resolve(appCheck).then(function () { return finishLink(Au, auth); }).then(function () {
         return new Promise(function (ok) {
           var first = true;
           Au.onAuthStateChanged(auth, function (u) {
@@ -123,6 +128,15 @@
           createdAt: (prev && prev.createdAt) || now, updatedAt: now, updatedBy: api.user.email, source: (prev && prev.source) || 'hub'
         });
         return FS.Fs.setDoc(FS.Fs.doc(FS.store, ROOT + '/' + coll, id), d);
+      });
+    },
+    /* upload one file to Storage under hubs/2human-admin/documents/{docId}/{name}; resolves with the storage path */
+    upload: function (docId, file) {
+      return init().then(function () { return import(SDK + 'storage.js'); }).then(function (St) {
+        var cfg = window.FIREBASE_CONFIG || {}, st = St.getStorage(AU.app);
+        if (cfg.emulator && cfg.emulator.storage && !AU.stEmu) { St.connectStorageEmulator(st, '127.0.0.1', cfg.emulator.storage); AU.stEmu = true; }
+        var name = String(file.name || 'file').replace(/[^\w.-]+/g, '_').slice(-120), path = ROOT + '/documents/' + docId + '/' + name;
+        return St.uploadBytes(St.ref(st, path), file, { contentType: file.type || 'application/octet-stream' }).then(function () { return path; });
       });
     },
     opsDelete: function (coll, id) {
