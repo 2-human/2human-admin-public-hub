@@ -98,6 +98,35 @@
     },
     cancel: function (id) {
       return init().then(function () { return FS.Fs.updateDoc(FS.Fs.doc(FS.store, ROOT + '/requests', id), { status: 'cancelled' }); });
+    },
+
+    /* Operations data (plan P5, firebase/MODEL.md): CRM and accounting, admin accounts only. Live, straight from
+     * Firestore; nothing of it is in the published bundle. */
+    canEdit: function () { return !!api.user && api.user.role === 'admin'; },
+    /* every document of a collection, live; fn({ id: data }) on each change, fn(null) when it cannot be read */
+    opsWatch: function (coll, fn) {
+      var stop = null, stopped = false;
+      init().then(function () {
+        if (stopped) return;
+        if (!api.canEdit()) return fn(null);
+        stop = FS.Fs.onSnapshot(FS.Fs.collection(FS.store, ROOT + '/' + coll), function (snap) {
+          var all = {}; snap.forEach(function (d) { all[d.id] = d.data(); }); fn(all);
+        }, function (e) { console.error('[auth] ' + coll, e); fn(null); });
+      }, function () { fn(null); });
+      return function () { stopped = true; if (stop) stop(); };
+    },
+    newId: function () { return FS ? FS.Fs.doc(FS.Fs.collection(FS.store, ROOT + '/x')).id : 'n' + Date.now().toString(36); },
+    /* replace a document with `data`, stamped; keeps createdAt and the record's provenance (source) */
+    opsSave: function (coll, id, data, prev) {
+      return init().then(function () {
+        var now = Date.now(), d = Object.assign({}, data, {
+          createdAt: (prev && prev.createdAt) || now, updatedAt: now, updatedBy: api.user.email, source: (prev && prev.source) || 'hub'
+        });
+        return FS.Fs.setDoc(FS.Fs.doc(FS.store, ROOT + '/' + coll, id), d);
+      });
+    },
+    opsDelete: function (coll, id) {
+      return init().then(function () { return FS.Fs.deleteDoc(FS.Fs.doc(FS.store, ROOT + '/' + coll, id)); });
     }
   };
 })();
