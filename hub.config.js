@@ -15,8 +15,8 @@ window.HUB_CONFIG = {
   storage: { prefix: '2human-admin-hub' },
   modules: ['tables', 'evidence'],
   /* the one ordered file list: locally these load as files; on the mirror gate.js runs them from data/bundle.enc */
-  data: ['data/core.js?v=18b6968172', 'data/fleet.js?v=e909904ec5'],
-  dataOptional: ['data/accounts.js?v=bcc49a43fb'],
+  data: ['data/core.js?v=18b6968172', 'data/fleet.js?v=533ff95ac6'],
+  dataOptional: ['data/accounts.js?v=6ec5d1b0d0'],
   views: ['views.js?v=73d0502475', 'actions.js?v=88dccc26d9'],
   labels: {
     /* the sign-in gate (gate.js): the only words a signed-out visitor sees, so they live here, not in the bundle */
