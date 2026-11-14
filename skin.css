@@ -4,3 +4,46 @@ form.grant { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: end; ma
 form.grant h3 { flex-basis: 100%; margin: 0; }
 form.grant label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
 form.grant input, form.grant select { padding: 6px 8px; border: 1px solid var(--hub-line); border-radius: 6px; background: var(--hub-bg); color: var(--hub-ink); }
+
+/* Library map (map-views.js) */
+p.notice { background: var(--hub-soft); border-left: 3px solid var(--hub-accent); padding: 8px 12px; border-radius: 4px; font-size: 13px; max-width: 90ch; }
+.lm-tools { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; margin: 12px 0 6px; font-size: 13px; }
+.lm-opt { display: inline-flex; gap: 5px; align-items: center; cursor: pointer; }
+.lm-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12px; color: var(--hub-mute); margin: 0 0 8px; }
+.lm-key { display: inline-flex; gap: 6px; align-items: center; }
+.lm-key svg { overflow: visible; }
+.lm-scroll { overflow: auto; max-height: 78vh; border: 1px solid var(--hub-line); border-radius: 8px; background: var(--hub-card); }
+.lm-svg { display: block; font-family: var(--hub-font, inherit); }
+.lm-col { font-size: 12px; font-weight: 700; fill: var(--hub-head); text-transform: uppercase; letter-spacing: .04em; }
+.lm-band { font-size: 11px; fill: var(--hub-mute); }
+.lm-n rect { fill: var(--hub-bg); stroke: var(--hub-line); stroke-width: 1; }
+.lm-n text { font-size: 12px; fill: var(--hub-ink); pointer-events: none; }
+.lm-n { cursor: pointer; outline: none; }
+.lm-n.n-p rect { fill: var(--hub-accent-soft); stroke: var(--hub-accent); }
+.lm-n.c-doing rect { stroke-width: 1; }
+.lm-n.c-creating rect { stroke-dasharray: none; }
+.lm-n.n-new rect { stroke-dasharray: 4 3; stroke: var(--hub-warn); fill: var(--hub-card); }
+.lm-n:hover rect, .lm-n:focus rect, .lm-n.sel rect { stroke: var(--hub-accent); stroke-width: 2; }
+.lm-e { fill: none; stroke-width: 1.4; opacity: .55; }
+.lm-e.e-conf { stroke: var(--hub-accent); }
+.lm-e.e-added { stroke: var(--hub-accent); stroke-dasharray: 5 3; }
+.lm-e.e-weak { stroke: var(--hub-warn); stroke-dasharray: 2 3; }
+.lm-e.e-refuted { stroke: var(--hub-bad); stroke-dasharray: 1 3; }
+.lm-e.e-impl { stroke: var(--hub-ink); }
+.lm-e.e-impl.e-wk { stroke-dasharray: 2 3; }
+.lm-e.e-conforms { stroke: var(--hub-mute); stroke-width: .8; opacity: .35; }
+.hide-weak .e-weak, .hide-refuted .e-refuted, .hide-conforms .e-conforms, .hide-added .e-added { display: none; }
+.lm-svg.lit .lm-n:not(.on) { opacity: .25; }
+.lm-svg.lit .lm-e:not(.on) { opacity: .06; }
+.lm-svg.lit .lm-e.on { opacity: 1; stroke-width: 2; }
+.lm-key path { stroke-width: 2; fill: none; }
+.lm-key.k-conf path { stroke: var(--hub-accent); }
+.lm-key.k-weak path { stroke: var(--hub-warn); stroke-dasharray: 2 3; }
+.lm-key.k-added path { stroke: var(--hub-accent); stroke-dasharray: 5 3; }
+.lm-key.k-refuted path { stroke: var(--hub-bad); stroke-dasharray: 1 3; }
+.lm-key.k-impl path { stroke: var(--hub-ink); }
+.lm-key.k-conforms path { stroke: var(--hub-mute); stroke-width: 1; }
+.lm-key.k-new rect { fill: none; stroke: var(--hub-warn); stroke-dasharray: 4 3; }
+.lm-ref { color: var(--hub-accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.lm-files { margin: 0; padding-left: 18px; font-size: 13px; }
+.lm-files li { margin: 2px 0; }
