@@ -13,11 +13,11 @@ window.HUB_CONFIG = {
   tokens: { accent: '#197a69', accentSoft: '#e3f1ee' },
   tokensDark: { accent: '#34b29a', accentSoft: '#173a33' },
   storage: { prefix: '2human-admin-hub' },
-  modules: ['tables', 'evidence'],
+  modules: ['tables', 'evidence', 'page-frame'],   // page-frame: Website › Live site
   /* the one ordered file list: locally these load as files; on the mirror gate.js runs them from data/bundle.enc */
-  data: ['data/core.js?v=886105bcdf', 'data/fleet.js?v=c58cf73c54', 'data/library-map.js?v=e44898e087'],
-  dataOptional: ['data/accounts.js?v=c324864dad'],
-  views: ['views.js?v=73d0502475', 'actions.js?v=385d21c902', 'map-views.js?v=8aaf68cb22'],
+  data: ['data/core.js?v=905c6928b9', 'data/fleet.js?v=042c8f83f1', 'data/library-map.js?v=cb4ffbce51', 'data/ops.js?v=fb66088072', 'data/website.js?v=da3214cc7a', 'data/website-words.js?v=1a1d344e71'],   // website.js: tools/website/build-hub-data.mjs
+  dataOptional: ['data/accounts.js?v=14befcb08f'],
+  views: ['views.js?v=73d0502475', 'actions.js?v=9abd5cfa44', 'map-views.js?v=8aaf68cb22', 'ops.js?v=406846fcd9', 'website.js?v=d97aadd890'],
   labels: {
     /* the sign-in gate (gate.js): the only words a signed-out visitor sees, so they live here, not in the bundle */
     gateTitle: '2human admin',
