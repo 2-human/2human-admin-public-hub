@@ -15,8 +15,8 @@ window.HUB_CONFIG = {
   storage: { prefix: '2human-admin-hub' },
   modules: ['tables', 'evidence', 'page-frame'],   // page-frame: Website › Live site
   /* the one ordered file list: locally these load as files; on the mirror gate.js runs them from data/bundle.enc */
-  data: ['data/core.js?v=905c6928b9', 'data/fleet.js?v=cfa82c3c04', 'data/library-map.js?v=cb4ffbce51', 'data/ops.js?v=2fdda7c7ee', 'data/website.js?v=da3214cc7a', 'data/website-words.js?v=1a1d344e71'],   // website.js: tools/website/build-hub-data.mjs
-  dataOptional: ['data/accounts.js?v=a5470ab21a'],
+  data: ['data/core.js?v=905c6928b9', 'data/fleet.js?v=c91e934768', 'data/library-map.js?v=cb4ffbce51', 'data/ops.js?v=2fdda7c7ee', 'data/website.js?v=da3214cc7a', 'data/website-words.js?v=1a1d344e71'],   // website.js: tools/website/build-hub-data.mjs
+  dataOptional: ['data/accounts.js?v=f8affc569f'],
   views: ['views.js?v=73d0502475', 'actions.js?v=9abd5cfa44', 'map-views.js?v=8aaf68cb22', 'ops.js?v=121e595f5a', 'website.js?v=d97aadd890'],
   labels: {
     /* the sign-in gate (gate.js): the only words a signed-out visitor sees, so they live here, not in the bundle */
