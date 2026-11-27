@@ -65,6 +65,11 @@ p.notice { background: var(--hub-soft); border-left: 3px solid var(--hub-accent)
 .op-settle .op-field { flex: 1 1 220px; }
 .op-settle .op-field input { flex: none; padding: 6px 8px; border: 1px solid var(--hub-line); border-radius: 6px; background: var(--hub-bg); color: var(--hub-ink); font: inherit; }
 .op-upload { cursor: pointer; display: inline-block; }
+/* Send invoice (ops.js): To, Cc and the email language side by side */
+.op-send { margin: 4px 0 18px; }
+.op-send .op-row { align-items: flex-end; }
+.op-send .op-field { flex: 1 1 200px; }
+.op-send .op-field input, .op-send .op-field select { flex: none; padding: 6px 8px; border: 1px solid var(--hub-line); border-radius: 6px; background: var(--hub-bg); color: var(--hub-ink); font: inherit; }
 
 /* Website › Assets (website.js), as in the other project hubs */
 .asset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin: 8px 0 24px; }
